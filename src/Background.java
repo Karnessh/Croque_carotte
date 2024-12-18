@@ -16,6 +16,7 @@ public class Background  extends JPanel{
 		this.path = path;
 		this.setLayout(null);
 		//this.setPreferredSize(new Dimension(1920/2, 1080/2));
+		repaint();
 
 	}
 	public void paint(Graphics g) {
@@ -23,9 +24,10 @@ public class Background  extends JPanel{
 
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.drawImage(background, 0, 0, null);
-		g2D.drawLine(0	,0, 250, 250);
+		//g2D.drawLine(0	,0, 250, 250);
 
 		
 	}
+
 	
 }
