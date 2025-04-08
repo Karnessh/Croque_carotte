@@ -13,10 +13,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
+@SuppressWarnings("serial")
 public class NumberPlayerMenu extends JPanel {
 
 	int positionX;
 	int positionY;
+	static int lastSelected = 1;
 	
 
 	Background background;
@@ -74,8 +76,6 @@ public class NumberPlayerMenu extends JPanel {
 	JButton startButton;
 	JButton backButton;
 	
-	
-	
 	int buttonWidth = 300;
 	int mainMenuX = 700;
 	int mainMenuY = 350;
@@ -86,9 +86,6 @@ public class NumberPlayerMenu extends JPanel {
 	Font buttonFont;
 	FlowLayout flowLayout;
 	Color labelColor;
-	
-	
-	
 	
 	public NumberPlayerMenu() {
 		
@@ -101,7 +98,6 @@ public class NumberPlayerMenu extends JPanel {
 		backgroundJPanel = new JPanel();
 		background = new Background(".\\Graphics\\main_screen.png");
 		
-		
 		// First Panel
 		numberOfPlayerJPanel = new JPanel();
 		numberOfPlayerJPanel.setOpaque(isOpaque);
@@ -111,7 +107,6 @@ public class NumberPlayerMenu extends JPanel {
 		numberOfPlayerJLabel = new JLabel("Choose the number of players");
 		numberOfPlayerJLabel.setFont(new Font("Arial", Font.BOLD, 30));
 		numberOfPlayerJLabel.setForeground(labelColor);
-		
 		
 		// Second panel
 		numberOfPlayerJPanel.add(numberOfPlayerJLabel);
@@ -142,7 +137,6 @@ public class NumberPlayerMenu extends JPanel {
 		numberOfPlayerButtonJPanel.add(numberOfPlayer2Button);
 		numberOfPlayerButtonJPanel.add(numberOfPlayer3Button);
 		numberOfPlayerButtonJPanel.add(numberOfPlayer4Button);
-		
 		
 		// Player 1 panel
 		player1JPanel = new JPanel();
@@ -181,14 +175,13 @@ public class NumberPlayerMenu extends JPanel {
 		player1JPanel.add(player1RightColorSelectionButton);
 		player1JPanel.add(player1ColorDisplayBox);
 
-
 		// Player 2 panel
 		player2JPanel = new JPanel();
 		player2JPanel.setOpaque(isOpaque);
 		player2JPanel.setPreferredSize(new Dimension(mainMenuX, panelHeight));
 		player2JPanel.setBackground(Color.blue);
 		
-		player2NameJLabel = new JLabel("Player 1 name :");
+		player2NameJLabel = new JLabel("Player 2 name :");
 		player2NameJLabel.setFont(labelFonts);
 		player2NameJLabel.setForeground(labelColor);
 		
@@ -218,7 +211,6 @@ public class NumberPlayerMenu extends JPanel {
 		player2JPanel.add(player2LeftColorSelectionButton);
 		player2JPanel.add(player2RightColorSelectionButton);
 		player2JPanel.add(player2ColorDisplayBox);
-
 		
 		// Player 3 panel
 		player3JPanel = new JPanel();
@@ -226,7 +218,7 @@ public class NumberPlayerMenu extends JPanel {
 		player3JPanel.setPreferredSize(new Dimension(mainMenuX, panelHeight));
 		player3JPanel.setBackground(Color.blue);
 		
-		player3NameJLabel = new JLabel("Player 1 name :");
+		player3NameJLabel = new JLabel("Player 3 name :");
 		player3NameJLabel.setFont(labelFonts);
 		player3NameJLabel.setForeground(labelColor);
 		
@@ -256,7 +248,6 @@ public class NumberPlayerMenu extends JPanel {
 		player3JPanel.add(player3LeftColorSelectionButton);
 		player3JPanel.add(player3RightColorSelectionButton);
 		player3JPanel.add(player3ColorDisplayBox);
-
 		
 		// Player 4 panel
 		player4JPanel = new JPanel();
@@ -264,7 +255,7 @@ public class NumberPlayerMenu extends JPanel {
 		player4JPanel.setPreferredSize(new Dimension(mainMenuX, panelHeight));
 		player4JPanel.setBackground(Color.blue);
 		
-		player4NameJLabel = new JLabel("Player 1 name :");
+		player4NameJLabel = new JLabel("Player 4 name :");
 		player4NameJLabel.setFont(labelFonts);
 		player4NameJLabel.setForeground(labelColor);
 		
@@ -295,7 +286,7 @@ public class NumberPlayerMenu extends JPanel {
 		player4JPanel.add(player4RightColorSelectionButton);
 		player4JPanel.add(player4ColorDisplayBox);
 		
-		
+		// start and back button panel
 		startJPanel = new JPanel();
 		startJPanel.setOpaque(isOpaque);
 		startJPanel.setPreferredSize(new Dimension(mainMenuX, panelHeight));
@@ -322,15 +313,12 @@ public class NumberPlayerMenu extends JPanel {
 				mainMenuX, 
 				mainMenuY);
 		
-		
 		this.add(backgroundJPanel);
 		this.add(background);
 		this.setBounds(0, 0, CroqueCarotte.getScreenWidthX(), CroqueCarotte.getScreenHeightY());
 		this.setLayout(null);
 		
-		updateNumberOfPlayers(Player.getNumberOfPlayer(),this);
-	
-		
+		updateNumberOfPlayers(Player.getNumberOfPlayer());
 	}
 	public void refreshField() {
 		player1NameTextField.setText(CroqueCarotte.player1.getPlayerName());
@@ -341,52 +329,88 @@ public class NumberPlayerMenu extends JPanel {
 		player3ColorDisplayBox.setBackground(CroqueCarotte.player3.getPlayerColor());
 		player4NameTextField.setText(CroqueCarotte.player4.getPlayerName());
 		player4ColorDisplayBox.setBackground(CroqueCarotte.player4.getPlayerColor());
+		if (Player.getNumberOfPlayer() == 2) {
+			numberOfPlayer2Button.setSelected(true);
+		}
+		if (Player.getNumberOfPlayer() == 3) {
+			numberOfPlayer3Button.setSelected(true);
+		}
+		if (Player.getNumberOfPlayer() == 4) {
+			numberOfPlayer4Button.setSelected(true);
+		}
 	}
+	
+	
 	public void saveDataToPlayers() {
+		
 		CroqueCarotte.player1.setPlayerName(checkName(player1NameTextField.getText(),1));
 		CroqueCarotte.player2.setPlayerName(checkName(player2NameTextField.getText(),2));
 		CroqueCarotte.player3.setPlayerName(checkName(player3NameTextField.getText(),3));
 		CroqueCarotte.player4.setPlayerName(checkName(player4NameTextField.getText(),4));
 	}
+	
+	
 	private String checkName(String name, int playerID) {
+		
 		if (name.equals("")) {
 			name = "Player " + playerID;
 		}
 		return name;
-		
 	}
 
+	
 	private int  getPosition(int parentValue, int thisValue) {
+		
 		int parentHalf = parentValue / 2;
 		int thisValueHalf = thisValue / 2;
 		return parentHalf - thisValueHalf;
 	}
-	public void updateNumberOfPlayers(int nbrPlayer, NumberPlayerMenu thisClass) {
+	
+	
+	public void updateNumberOfPlayers(int nbrPlayer) {
+		
 		if (nbrPlayer == 2) {
 			Player.setNumberOfPlayer(2);
 			player3JPanel.setVisible(false);;
 			player4JPanel.setVisible(false);
+			lastSelected = 1;
 		}
 		if (nbrPlayer == 3) {
 			Player.setNumberOfPlayer(3);
 			player3JPanel.setVisible(true);
 			player4JPanel.setVisible(false);
-			CroqueCarotte.player3.updateColor(Direction.RIGHT);
+			if (CroqueCarotte.player3.checkDuplicatePlayerColor()) {
+				CroqueCarotte.player3.updateColor(Direction.RIGHT);
+			}
 			player3ColorDisplayBox.setBackground(CroqueCarotte.player3.getPlayerColor());
+			lastSelected = 2;
 		}
 		if (nbrPlayer == 4) {
 			Player.setNumberOfPlayer(4);
 			player3JPanel.setVisible(true);
 			player4JPanel.setVisible(true);
-			CroqueCarotte.player3.updateColor(Direction.RIGHT);
-			CroqueCarotte.player4.updateColor(Direction.RIGHT);
+			if (CroqueCarotte.player3.checkDuplicatePlayerColor()) {
+				CroqueCarotte.player3.updateColor(Direction.RIGHT);
+			}
+			
+			if (CroqueCarotte.player4.checkDuplicatePlayerColor()) {
+				CroqueCarotte.player4.updateColor(Direction.RIGHT);
+			}
+			
 			player3ColorDisplayBox.setBackground(CroqueCarotte.player3.getPlayerColor());
 			player4ColorDisplayBox.setBackground(CroqueCarotte.player4.getPlayerColor());
+			lastSelected = 3;
+		}
+		PlayScreen.currentPlayerList.clear();
+		for (int i = 0; i < Player.getNumberOfPlayer(); i++) {
+			PlayScreen.currentPlayerList.add(Player.getPlayerList().get(i));
 		}
 		this.repaint();
-		
 	}
+	
+	
 	class ColorChanger implements ActionListener {
+		
 		NumberPlayerMenu thisClass;
 		Direction direction;
 		Player player;
@@ -401,47 +425,41 @@ public class NumberPlayerMenu extends JPanel {
 			player.updateColor(direction);
 			System.out.println(player.getPlayerColor());
 			switch (player.getPlayerID()) {
-			case 1:
+			case 0:
 				thisClass.player1ColorDisplayBox.setBackground(player.getPlayerColor());
 				break;
-			case 2:
+			case 1:
 				thisClass.player2ColorDisplayBox.setBackground(player.getPlayerColor());
 				break;
-			case 3:
+			case 2:
 				thisClass.player3ColorDisplayBox.setBackground(player.getPlayerColor());
 				break;
-			case 4:
+			case 3:
 				thisClass.player4ColorDisplayBox.setBackground(player.getPlayerColor());
 				break;
 			}
 		}
-		
 	}
+	
+	
 	class ToogleNumberOfPlayers implements ActionListener {
 		NumberPlayerMenu thisClass;
-		static int lastSelected = 1;
+
 		
 		public ToogleNumberOfPlayers(NumberPlayerMenu thisClass) {
 			this.thisClass = thisClass;
-			
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == thisClass.numberOfPlayer2Button && lastSelected != 1) {
-				lastSelected = 1;
-				updateNumberOfPlayers(2,thisClass);
+				updateNumberOfPlayers(2);
 			}
 			if (e.getSource() == thisClass.numberOfPlayer3Button && lastSelected != 2) {
-				lastSelected = 2;
-				updateNumberOfPlayers(3,thisClass);
+				updateNumberOfPlayers(3);
 			}
 			if (e.getSource() == thisClass.numberOfPlayer4Button && lastSelected != 3) {
-				lastSelected = 3;
-				updateNumberOfPlayers(4,thisClass);
+				updateNumberOfPlayers(4);
 			}
 		}
 	}
-
-	
-	
 }

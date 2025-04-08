@@ -3,51 +3,79 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Miniature {
-	Image MiniatureColorBlueImage;
-	String MiniatureColorBluePath = ".\\Graphics\\blue_miniature.png";
 	
-	Image MiniatureColorRedImage;
-	String MiniatureColorRedPath = ".\\Graphics\\red_miniature.png";
-	
-	Image MiniatureColorYellowImage;
-	String MiniatureColorYellowPath = ".\\Graphics\\yellow_miniature.png";
-	
-	Image MiniatureColorGreenImage;
-	String MiniatureColorGreenPath = ".\\Graphics\\green_miniature.png";
-	
-	Image MiniatureColorCyanImage;
-	String MiniatureColorCyanPath = ".\\Graphics\\cyan_miniature.png";
-	
-	Image MiniatureColorPurpleImage;
-	String MiniatureColorPurplePath = ".\\Graphics\\purple_miniature.png";
-	
-	static int miniatureOffsetX = -20;
-	static int miniatureOffsetY = -64;
+	private static int miniatureOffsetX = -20;
+	private static int miniatureOffsetY = -64;
+	private MiniatureImages[] listImages = new MiniatureImages[6];
+	private String[] miniatureColor = { "blue", "red", "yellow", "green", "cyan", "purple"};
+	private int playerIndexColor;
+	private Image currentImage;
 	
 	public static int getMiniatureOffsetX(int x) {
 		return miniatureOffsetX + x;
 	}
-
 	public static int getMiniatureOffsetY(int y) {
 		return miniatureOffsetY + y;
 	}
-
-	private Image[] listImages = new Image[6];
-	
-	public Image getImage(int index) {
-		return listImages[index];
+	public Image getImage() {
+		return currentImage;
 	}
+	public void setImage(int playerColorIndex) {
+		currentImage = listImages[playerColorIndex].getCurrentFrame();
+		this.playerIndexColor = playerColorIndex;
+	}
+	public void getNextImage() {
+		currentImage =  listImages[playerIndexColor].getnextFrame();
+	}
+	public void resetImage() {
+		currentImage =  listImages[playerIndexColor].resetImage();
+	}
+
 
 	public Miniature() {
-		listImages[0] = MiniatureColorBlueImage = new ImageIcon(MiniatureColorBluePath).getImage();
-		listImages[1] = MiniatureColorRedImage = new ImageIcon(MiniatureColorRedPath).getImage();
-		listImages[2] = MiniatureColorYellowImage = new ImageIcon(MiniatureColorYellowPath).getImage();
-		listImages[3] = MiniatureColorGreenImage = new ImageIcon(MiniatureColorGreenPath).getImage();
-		listImages[4] = MiniatureColorCyanImage = new ImageIcon(MiniatureColorCyanPath).getImage();
-		listImages[5] = MiniatureColorPurpleImage = new ImageIcon(MiniatureColorPurplePath).getImage();
 		
-		
+		for (int i = 0; i < listImages.length; i++) {
+			listImages[i] = new MiniatureImages(miniatureColor[i]);
+		}
 	}
 	
 
+	class MiniatureImages {
+		
+		private int baseFrame = 0;
+		private int currentFrame = 0;
+		private Image[] miniImages = new Image[10];
+		
+		public MiniatureImages(String color) {
+			String fullPath = ".\\Graphics\\" + color + "\\" + color + "_";
+			for (int i = 0; i < miniImages.length; i++) {
+				miniImages[i] = new ImageIcon(fullPath + i + ".png").getImage();
+			}
+			
+		}
+		
+		
+		public Image getnextFrame() {
+			
+			if (currentFrame < miniImages.length-1) {
+				currentFrame++;
+			} else {
+				currentFrame = 0;
+			}
+			return miniImages[currentFrame];
+			
+		}
+		
+		
+		public Image getCurrentFrame() {
+			
+			return miniImages[currentFrame];
+		}
+		
+		
+		public Image resetImage() {
+			
+			return miniImages[baseFrame];
+		}
+	}
 }

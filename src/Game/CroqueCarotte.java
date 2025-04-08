@@ -1,10 +1,11 @@
 package Game;
+
 import javax.swing.ImageIcon;
 
 
 public class CroqueCarotte {
 	static private int screenWidthX = 960;
-	static public int screenHeightY = 540;
+	static private int screenHeightY = 540;
 	public static Player player1;
 	public static Player player2;
 	public static Player player3;
@@ -21,11 +22,11 @@ public class CroqueCarotte {
 	
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		player1 = new Player();
-		player2 = new Player();
-		player3 = new Player();
-		player4 = new Player();
+
+		player1 = new Player(500, 496);
+		player2 = new Player(550, 496);
+		player3 = new Player(600, 496);
+		player4 = new Player(650, 496);
 		ImageIcon mainIcon = new ImageIcon(".\\Graphics\\carrot.png");
 		PreGame titleScreen = new PreGame();
 		titleScreen.setIconImage(mainIcon.getImage());
